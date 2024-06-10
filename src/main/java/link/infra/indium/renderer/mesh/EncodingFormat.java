@@ -17,7 +17,6 @@
 package link.infra.indium.renderer.mesh;
 
 import com.google.common.base.Preconditions;
-
 import link.infra.indium.renderer.helper.GeometryHelper;
 import link.infra.indium.renderer.material.RenderMaterialImpl;
 import me.jellysquid.mods.sodium.client.model.quad.properties.ModelQuadFacing;
@@ -66,7 +65,7 @@ public abstract class EncodingFormat {
 		VERTEX_V = VERTEX_U + 1;
 		VERTEX_LIGHTMAP = HEADER_STRIDE + 6;
 		VERTEX_NORMAL = HEADER_STRIDE + 7;
-		VERTEX_STRIDE = format.getVertexSizeInteger();
+		VERTEX_STRIDE = format.getVertexSizeByte();
 		QUAD_STRIDE = VERTEX_STRIDE * 4;
 		QUAD_STRIDE_BYTES = QUAD_STRIDE * 4;
 		TOTAL_STRIDE = HEADER_STRIDE + QUAD_STRIDE;

@@ -1,8 +1,5 @@
 package link.infra.indium.other;
 
-import java.util.Collection;
-import java.util.List;
-
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
 import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -11,6 +8,9 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Cache SpriteFinders for maximum efficiency.
@@ -25,7 +25,7 @@ public class SpriteFinderCache {
 	}
 
 	public static class ReloadListener implements SimpleSynchronousResourceReloadListener {
-		public static final Identifier ID = new Identifier("indium", "sprite_finder_cache");
+		public static final Identifier ID = Identifier.of("indium", "sprite_finder_cache");
 		public static final List<Identifier> DEPENDENCIES = List.of(ResourceReloadListenerKeys.MODELS);
 		public static final ReloadListener INSTANCE = new ReloadListener();
 

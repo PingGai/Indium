@@ -16,13 +16,6 @@
 
 package link.infra.indium.renderer.render;
 
-import java.util.function.Consumer;
-
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import link.infra.indium.other.SpriteFinderCache;
 import link.infra.indium.renderer.mesh.MutableQuadViewImpl;
@@ -32,6 +25,12 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.texture.Sprite;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
+import java.util.function.Consumer;
 
 abstract class AbstractRenderContext implements RenderContext {
 	private static final QuadTransform NO_TRANSFORM = q -> true;
@@ -131,7 +130,6 @@ abstract class AbstractRenderContext implements RenderContext {
 			}
 
 			vertexConsumer.normal(normalVec.x(), normalVec.y(), normalVec.z());
-			vertexConsumer.next();
 		}
 
 		Sprite sprite = quad.cachedSprite();

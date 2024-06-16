@@ -16,6 +16,7 @@
 
 package link.infra.indium.renderer.render;
 
+import link.infra.indium.mixin.renderer.ItemRendererAccessor;
 import link.infra.indium.renderer.helper.ColorHelper;
 import link.infra.indium.renderer.mesh.EncodingFormat;
 import link.infra.indium.renderer.mesh.MutableQuadViewImpl;
@@ -36,6 +37,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MatrixUtil;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
@@ -82,13 +84,16 @@ public class ItemRenderContext extends AbstractRenderContext {
 
 	private ItemStack itemStack;
 	private ModelTransformationMode transformMode;
+	private MatrixStack matrixStack;
 	private VertexConsumerProvider vertexConsumerProvider;
 	private int lightmap;
 
 	private boolean isDefaultTranslucent;
 	private boolean isTranslucentDirect;
 	private boolean isDefaultGlint;
+	private boolean isGlintDynamicDisplay;
 
+	private MatrixStack.Entry dynamicDisplayGlintEntry;
 	private VertexConsumer translucentVertexConsumer;
 	private VertexConsumer cutoutVertexConsumer;
 	private VertexConsumer translucentGlintVertexConsumer;
@@ -112,6 +117,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 	public void renderModel(ItemStack itemStack, ModelTransformationMode transformMode, boolean invert, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int lightmap, int overlay, BakedModel model) {
 		this.itemStack = itemStack;
 		this.transformMode = transformMode;
+		this.matrixStack = matrixStack;
 		this.vertexConsumerProvider = vertexConsumerProvider;
 		this.lightmap = lightmap;
 		this.overlay = overlay;
@@ -123,8 +129,10 @@ public class ItemRenderContext extends AbstractRenderContext {
 		model.emitItemQuads(itemStack, randomSupplier, this);
 
 		this.itemStack = null;
+		this.matrixStack = null;
 		this.vertexConsumerProvider = null;
 
+		dynamicDisplayGlintEntry = null;
 		translucentVertexConsumer = null;
 		cutoutVertexConsumer = null;
 		translucentGlintVertexConsumer = null;
@@ -151,6 +159,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 		}
 
 		isDefaultGlint = itemStack.hasGlint();
+		isGlintDynamicDisplay = ItemRendererAccessor.indium$usesDynamicDisplay(itemStack);
 	}
 
 	private void renderQuad(MutableQuadViewImpl quad) {
@@ -170,7 +179,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 
 	private void colorizeQuad(MutableQuadViewImpl quad, int colorIndex) {
 		if (colorIndex != -1) {
-			final int itemColor = 0xFF000000 | colorMap.getColor(itemStack, colorIndex);
+			final int itemColor = colorMap.getColor(itemStack, colorIndex);
 
 			for (int i = 0; i < 4; i++) {
 				quad.color(i, ColorHelper.multiplyColor(itemColor, quad.color(i)));
@@ -245,6 +254,10 @@ public class ItemRenderContext extends AbstractRenderContext {
 	}
 
 	private VertexConsumer createTranslucentVertexConsumer(boolean glint) {
+		if (glint && isGlintDynamicDisplay) {
+			return createDynamicDisplayGlintVertexConsumer(MinecraftClient.isFabulousGraphicsOrBetter() && !isTranslucentDirect ? TexturedRenderLayers.getItemEntityTranslucentCull() : TexturedRenderLayers.getEntityTranslucentCull());
+		}
+
 		if (isTranslucentDirect) {
 			return ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, TexturedRenderLayers.getEntityTranslucentCull(), true, glint);
 		} else if (MinecraftClient.isFabulousGraphicsOrBetter()) {
@@ -255,7 +268,25 @@ public class ItemRenderContext extends AbstractRenderContext {
 	}
 
 	private VertexConsumer createCutoutVertexConsumer(boolean glint) {
+		if (glint && isGlintDynamicDisplay) {
+			return createDynamicDisplayGlintVertexConsumer(TexturedRenderLayers.getEntityCutout());
+		}
+
 		return ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, TexturedRenderLayers.getEntityCutout(), true, glint);
+	}
+
+	private VertexConsumer createDynamicDisplayGlintVertexConsumer(RenderLayer layer) {
+		if (dynamicDisplayGlintEntry == null) {
+			dynamicDisplayGlintEntry = matrixStack.peek().copy();
+
+			if (transformMode == ModelTransformationMode.GUI) {
+				MatrixUtil.scale(dynamicDisplayGlintEntry.getPositionMatrix(), 0.5F);
+			} else if (transformMode.isFirstPerson()) {
+				MatrixUtil.scale(dynamicDisplayGlintEntry.getPositionMatrix(), 0.75F);
+			}
+		}
+
+		return ItemRenderer.getDynamicDisplayGlintConsumer(vertexConsumerProvider, layer, dynamicDisplayGlintEntry);
 	}
 
 	private class BakedModelConsumerImpl implements BakedModelConsumer {

@@ -7,6 +7,7 @@
     "renderer.MixinBlockModelRenderer",
     "renderer.MixinItemRenderer",
 	"renderer.MixinBakedModel",
+    "renderer.ItemRendererAccessor",
     "sodium.AccessBlockRenderer",
     "sodium.MixinBlockRenderCache",
     "sodium.MixinChunkBuilderMeshingTask"

@@ -1,0 +1,76 @@
+name: Bug Report
+description: Report a bug or issue with the Indium mod.
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue with the Indium mod. Please make sure to complete the following steps before submitting your issue:
+
+        1. **Test without Sodium and Indium, if possible**: Even crashes with Indium in the crash report could be caused by other mods!
+        2. **Update all mods**: Make sure all your mods, especially those that depend on Sodium, are up to date.
+        3. **Provide log files**: Attach your `latest.log` file and any crash reports.
+
+  - type: checkboxes
+    id: prechecks
+    attributes:
+      label: Confirmation
+      description: "Please confirm the following by checking the boxes:"
+      options:
+        - label: I have tested the bug without Sodium and Indium.
+        - label: I have kept all my mods up to date.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Provide a clear and concise description of what the bug is.
+      placeholder: "Describe the bug..."
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Provide the steps to reproduce the bug.
+      placeholder: |
+        1. Open Minecraft
+        2. Place the Blorbo
+        3. Reconfigure the Mainframe
+
+  - type: input
+    id: version
+    attributes:
+      label: Mod Version
+      description: Specify the version of the Indium mod you are using.
+      placeholder: "e.g., Indium 1.0.0"
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version
+      description: Specify the version of Minecraft you are using.
+      placeholder: "e.g., Minecraft 1.16.5"
+
+  - type: textarea
+    id: latest_log
+    attributes:
+      label: Attach latest.log
+      description: |
+        Drop your `latest.log` file here. You can find this file in your Minecraft instance folder, at `.minecraft/logs/latest.log`
+      placeholder: "Drop your latest.log file here"
+
+  - type: textarea
+    id: crash_report
+    attributes:
+      label: Attach Crash Report
+      description: |
+        Drop your crash report file here, if the game crashed. You can find crash reports in your Minecraft instance folder, at `.minecraft/crash-reports/`
+      placeholder: "Drop your crash report file here"
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: Additional Information
+      description: Provide any additional information that may help us debug the issue.
+      placeholder: "Additional context, screenshots, etc."

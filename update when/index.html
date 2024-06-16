@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update when???</title>
+    <style>
+        body, html {
+            min-height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: #007acc;
+            transition: color 0.3s;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.5em;
+            transition: color 0.3s;
+        }
+        .punchline {
+            font-size: 2em;
+            font-weight: bold;
+            color: #d32f2f;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+        a {
+            color: #007acc;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body, html {
+                background-color: #282c34;
+                color: #ffffff;
+            }
+            .container {
+                background: rgba(0, 0, 0, 0.7);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            }
+            h1 {
+                color: #61dafb;
+            }
+            .punchline {
+                color: #ff6f61;
+            }
+            a {
+                color: #61dafb;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Patience, Young Grasshopper</h1>
+        <p>I know, I know. There's a shiny new Sodium or Minecraft release out there, and you can't wait to check out the new update with Indium. Trust me, I'm just as excited!</p>
+        <p>But here's the deal: I have a full-time job, a life, and limited free time to work on this mod. So, the update will be ready when it's ready.</p>
+        <p class="punchline">It'll be ready when it's ready. 🎉</p>
+        <p>In the meantime, why not take a walk, get some fresh air, and relax? The new version will come soon enough. Your patience and understanding are appreciated more than you know.</p>
+        <p>Follow the mod on <a href="https://modrinth.com/mod/indium">Modrinth</a> or <a href="https://github.com/comp500/Indium">GitHub</a> to be notified when the new version is released!</p>
+    </div>
+</body>
+</html>
